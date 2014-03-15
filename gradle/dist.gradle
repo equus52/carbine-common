@@ -1,0 +1,22 @@
+apply plugin: 'application'
+
+distZip {
+	into(project.name) {
+		allprojects{
+			from "../${project.name}/src/main/"
+			include 'config/*'
+		}
+	}
+}
+
+// 以下のように書いてもうまくいかないので無理やり書き換える
+// startScripts.classpath.add(files('$APP_HOME/config'))
+startScripts << {
+	def scriptFileBase = "${outputDir}/${applicationName}"
+
+	def scriptFileSh = file(scriptFileBase)
+	scriptFileSh.text = scriptFileSh.text.replace('CLASSPATH=$APP_HOME/lib', 'CLASSPATH=$APP_HOME/config/:$APP_HOME/lib')
+
+	def scriptFileBat = file(scriptFileBase+'.bat')
+	scriptFileBat.text = scriptFileBat.text.replace('CLASSPATH=%APP_HOME%\\lib', 'CLASSPATH=%APP_HOME%\\config\\;%APP_HOME%\\lib')
+}

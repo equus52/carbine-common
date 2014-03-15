@@ -1,0 +1,10 @@
+apply plugin: 'war'
+
+war {
+	allprojects{
+		from("../${project.name}/src/main/config/") {
+			include '*'
+			into('WEB-INF/classes')
+		}
+	}
+}

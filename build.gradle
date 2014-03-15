@@ -1,0 +1,15 @@
+apply from: '../carbine-common/gradle/build-base.gradle'
+
+dependencies {
+    compile 'com.google.code.findbugs:jsr305:2.0.1'
+    compile 'commons-lang:commons-lang:2.6'
+    compile 'commons-logging:commons-logging:1.1.2'
+    compile 'commons-collections:commons-collections:3.2.1'
+    compile 'com.google.guava:guava:16.0.1'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.projectlombok:lombok:1.12.6'
+
+    testCompile 'junit:junit:4.+'
+    testCompile 'junit-addons:junit-addons:1.4'
+    testCompile 'mockit:mockit:0.999.4'
+}
