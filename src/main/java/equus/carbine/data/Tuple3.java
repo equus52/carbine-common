@@ -1,10 +1,13 @@
 package equus.carbine.data;
 
-public interface Tuple3<T1, T2, T3> {
+import lombok.Value;
 
-    T1 get1();
+@Value
+public class Tuple3<T1, T2, T3> {
 
-    T2 get2();
+    T1 value1;
 
-    T3 get3();
+    T2 value2;
+
+    T3 value3;
 }

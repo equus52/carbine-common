@@ -1,6 +1,9 @@
 package equus.carbine.data;
 
-public interface Tuple1<T1> {
+import lombok.Value;
 
-    T1 get1();
+@Value
+public class Tuple1<T1> {
+
+    T1 value1;
 }
