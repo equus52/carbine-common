@@ -1,8 +1,7 @@
 package equus.carbine.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogConfigurationException;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class LogUtils {
 
@@ -11,13 +10,13 @@ public final class LogUtils {
      * 
      * @return Log object
      */
-    public static Log getLog() {
+    public static Logger getLog() {
         StackTraceElement[] stackTraces = new Throwable().getStackTrace();
         System.out.println("stack size is " + stackTraces.length);
         String sourceClassName = stackTraces[1].getClassName();
         try {
-            return LogFactory.getLog(Class.forName(sourceClassName));
-        } catch (LogConfigurationException | ClassNotFoundException e) {
+            return LoggerFactory.getLogger(Class.forName(sourceClassName));
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

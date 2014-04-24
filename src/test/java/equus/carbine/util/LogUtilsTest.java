@@ -2,21 +2,22 @@ package equus.carbine.util;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LogUtilsTest {
 
-    private static Log LOGGER = LogFactory.getLog(LogUtilsTest.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(LogUtilsTest.class);
 
-    private static Log LOGGER2 = LogUtils.getLog();
+    private static Logger LOGGER2 = LogUtils.getLog();
 
     @Test
     public void test_getLog() throws Exception {
-        Log log = LogUtils.getLog();
+        Logger log = LogUtils.getLog();
         assertEquals(log, LOGGER);
         assertEquals(LOGGER2, LOGGER);
+        LOGGER.info("test");
     }
 
     int stack = 0;
@@ -38,7 +39,7 @@ public class LogUtilsTest {
 
                 @Override
                 public void run() {
-                    LogFactory.getLog(LogUtilsTest.class);
+                    LoggerFactory.getLogger(LogUtilsTest.class);
                 }
             });
             System.out.println(time);
