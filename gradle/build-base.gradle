@@ -87,3 +87,14 @@ checkstyle  {
 
 repositories {  mavenCentral()   }
 eclipse { pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir }
+
+task makeSourceDirs {
+	def paths = ['src/main/java', 'src/main/resources', 'src/test/java', 'src/test/resources', ]
+	for ( path in paths ) {
+		def dir = new File(path)
+		if (!dir.isDirectory()) {
+	        dir.mkdirs()
+	    }
+	}
+}
+eclipseClasspath.dependsOn makeSourceDirs
