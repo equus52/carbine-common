@@ -41,9 +41,7 @@ dependencies {
     testCompile fileTree(dir: 'libs/testCompile', include: '**/*.jar', exclude: '**/*-sources.jar')
 }
 
-test {
-    maxParallelForks 10
-}
+test { maxParallelForks 10 }
 
 jar {
     manifest {
@@ -86,15 +84,41 @@ checkstyle  {
 ]*.ignoreFailures = true
 
 repositories {  mavenCentral()   }
-eclipse { pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir }
+eclipse {
+    pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
+
+    classpath {
+        file {
+            whenMerged { classpath ->
+                def srcs = classpath.entries.findAll { it.kind == 'src' || it.kind == 'output' }
+                def libs = classpath.entries.findAll { it.kind == 'lib' }
+                def vars = classpath.entries.findAll { it.kind == 'var' }
+                def others = classpath.entries.findAll { it.kind != 'src' && it.kind != 'output' && it.kind != 'lib' && it.kind != 'var' }
+                libs = libs.collect { lib ->
+                    def baseDir = project.projectDir.getAbsolutePath().replace('\\', '/')
+                    if (lib.path.startsWith(baseDir)) {
+                        lib.path = lib.path.replace(baseDir, ".")
+                    }
+                    return lib
+                }
+                classpath.entries = srcs + libs + vars + others
+            }
+        }
+    }
+}
 
 task makeSourceDirs {
-	def paths = ['src/main/java', 'src/main/resources', 'src/test/java', 'src/test/resources', ]
-	for ( path in paths ) {
-		def dir = new File(path)
-		if (!dir.isDirectory()) {
-	        dir.mkdirs()
-	    }
-	}
+    def paths = [
+        'src/main/java',
+        'src/main/resources',
+        'src/test/java',
+        'src/test/resources',
+    ]
+    for ( path in paths ) {
+        def dir = new File(path)
+        if (!dir.isDirectory()) {
+            dir.mkdirs()
+        }
+    }
 }
 eclipseClasspath.dependsOn makeSourceDirs
