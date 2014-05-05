@@ -10,7 +10,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-public class DateSupportTest {
+public class DateSupportTest_ {
 
     @Test
     public void testPrivateConstractor() {

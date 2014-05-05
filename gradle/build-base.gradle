@@ -18,8 +18,8 @@ eclipse.project {
     natures "org.springsource.ide.eclipse.gradle.core.nature"
     natures "net.sf.eclipsecs.core.CheckstyleNature"
     buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
-    natures "edu.umd.cs.findbugs.plugin.eclipse.findbugsNature"
-    buildCommand "edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder"
+//    natures "edu.umd.cs.findbugs.plugin.eclipse.findbugsNature"
+//    buildCommand "edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder"
 }
 tasks.all {
     if(it.name.contains('eclipseJdt')) {
