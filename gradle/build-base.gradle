@@ -18,8 +18,8 @@ eclipse.project {
     natures "org.springsource.ide.eclipse.gradle.core.nature"
     natures "net.sf.eclipsecs.core.CheckstyleNature"
     buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
-//    natures "edu.umd.cs.findbugs.plugin.eclipse.findbugsNature"
-//    buildCommand "edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder"
+    //    natures "edu.umd.cs.findbugs.plugin.eclipse.findbugsNature"
+    //    buildCommand "edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder"
 }
 tasks.all {
     if(it.name.contains('eclipseJdt')) {
@@ -32,8 +32,8 @@ tasks.all {
     }
 }
 
-sourceSets.main.java.srcDirs 'src/main/config'
 sourceSets.main.resources.srcDirs 'src/main/java'
+sourceSets.test.java.srcDirs 'src/test/groovy'
 
 dependencies {
     compile fileTree(dir: 'libs/compile', include: '**/*.jar', exclude: '**/*-sources.jar')
@@ -108,16 +108,14 @@ eclipse {
 }
 
 task makeSourceDirs {
-    def paths = [
-        'src/main/java',
-        'src/main/resources',
-        'src/test/java',
-        'src/test/resources',
+    def sources = [
+        sourceSets.main,
+        sourceSets.test
     ]
-    for ( path in paths ) {
-        def dir = new File(path)
-        if (!dir.isDirectory()) {
-            dir.mkdirs()
+    sources*.allSource*.srcDirs.flatten().each { File srcDir ->
+        if (!srcDir.isDirectory()) {
+            println "making $srcDir"
+            srcDir.mkdirs()
         }
     }
 }

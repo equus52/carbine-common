@@ -7,7 +7,7 @@ import lombok.experimental.ExtensionMethod;
 import org.junit.Test;
 
 @ExtensionMethod(StringExtensions.class)
-public class StringExtensionsTest_ {
+public class StringExtensionsTest {
 
     @Test
     public void test_lengthByte() {
