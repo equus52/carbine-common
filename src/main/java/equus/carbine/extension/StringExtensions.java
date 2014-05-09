@@ -1,6 +1,6 @@
 package equus.carbine.extension;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Extension class of {@link String}.

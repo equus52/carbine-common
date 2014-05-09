@@ -3,8 +3,8 @@ apply plugin: 'groovy'
 
 dependencies {
     compile 'com.google.code.findbugs:jsr305:2.0.1'
-    compile 'commons-lang:commons-lang:2.6'
-    compile 'commons-collections:commons-collections:3.2.1'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile 'org.apache.commons:commons-collections4:4.0'
     compile 'com.google.guava:guava:16.0.1'
     compile 'org.slf4j:slf4j-api:1.7.7'                                                                                                                                                                            
     compile 'ch.qos.logback:logback-classic:1.1.2'                                                                                                                                                                 
