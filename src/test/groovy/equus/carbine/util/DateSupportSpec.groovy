@@ -9,40 +9,16 @@ import spock.lang.Unroll
 @SuppressWarnings("null")
 class DateSupportSpec  extends Specification{
 
-    @Unroll
-    def "hasError false"() {
-        when:
-        ErrorMessages errors = new ErrorMessages()
+  @Unroll
+  def "getDifDate #date1, #date2 then return #dif"() {
+    expect:
+    new DateSupport().getDifDate(date1, date2) == dif
 
-        then:
-        errors.hasError() == false
-    }
-    @Unroll
-    def "hasError true"() {
-        when:
-        ErrorMessages errors = new ErrorMessages()
-        errors.add("message")
-
-        then:
-        errors.hasError() == true
-    }
-    @Unroll
-    def "getMessage 1"() {
-        when:
-        ErrorMessages errors = new ErrorMessages()
-        errors.add("message")
-
-        then:
-        errors.getMessage() == "message"
-    }
-    @Unroll
-    def "getMessage 2"() {
-        when:
-        ErrorMessages errors = new ErrorMessages()
-        errors.add("message1")
-        errors.add("message2")
-
-        then:
-        errors.getMessage() == "message1" + System.getProperty("line.separator") + "message2"
-    }
+    where:
+    date1      |date2      | dif
+    "20110331" |"20110331" | 0L
+    "20110331" |"20110401" | 1L
+    "20110331" |"20110330" | -1L
+    "20110331" |"20110501" | 31L
+  }
 }
