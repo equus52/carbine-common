@@ -48,11 +48,53 @@ public class PatternMatchersTest {
 
   @Test
   public void match_case_matcher() {
+    {
+      String str = "test";
+      match(str, //
+          case_(is("test2"), (String s) -> fail()), //
+          case_(startsWith("te"), (String s) -> assertThat(s, is(str))), //
+          case_default(o -> fail()));
+    }
+    {
+      String str = null;
+      match(str, //
+          case_(is("test2"), (String s) -> fail()), //
+          case_(is((String) null), (String s) -> assertThat(s, is(str))), //
+          case_default(o -> fail()));
+    }
+  }
 
-    String str = "test";
+  @Test
+  public void match_case_null() {
+    String str = null;
     match(str, //
-        case_(is("test2"), (String s) -> fail()), //
-        case_(startsWith("te"), (String s) -> assertThat(s, is(str))), //
+        case_(String.class, (String s) -> fail()), //
+        case_null(() -> assertThat(str, is((String) null))), //
         case_default(o -> fail()));
+  }
+
+  @Test
+  public void match_case_disjunction() {
+    {
+      String str = "test";
+      match(str, //
+          case_("test1", "test2", (String s) -> fail()), //
+          case_("test1", "test", (String s) -> assertThat(s, is(str))), //
+          case_default(o -> fail()));
+    }
+    {
+      String str = "test";
+      match(str, //
+          case_("test1", "test2", (String s) -> fail()), //
+          case_("test", "test2", (String s) -> assertThat(s, is(str))), //
+          case_default(o -> fail()));
+    }
+    {
+      String str = "test";
+      match(str, //
+          case_("test1", "test2", "test3", (String s) -> fail()), //
+          case_("test1", "test2", "test", (String s) -> assertThat(s, is(str))), //
+          case_default(o -> fail()));
+    }
   }
 }

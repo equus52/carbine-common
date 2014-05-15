@@ -1,5 +1,6 @@
 package equus.carbine.patternmatch;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
@@ -7,20 +8,20 @@ import javax.annotation.Nullable;
 
 import lombok.Value;
 
-import org.hamcrest.Matcher;
-
 @Value
-public class MatcherCaseBlock<S> implements CaseBlock<S> {
+public class DisjunctionCaseBlock<S> implements CaseBlock<S> {
   @Nonnull
-  Matcher<S> matcher;
+  List<S> matchValues;
   @Nonnull
   Consumer<S> consumer;
 
   @Override
   public boolean matchAndAccept(@Nullable S subject) {
-    if (matcher.matches(subject)) {
-      consumer.accept(subject);
-      return true;
+    for (S matchValue : matchValues) {
+      if (matchValue.equals(subject)) {
+        consumer.accept(subject);
+        return true;
+      }
     }
     return false;
   }

@@ -1,8 +1,7 @@
 /**
  * Non null parameters and return value by default.
  */
-@ParametersAreNonnullByDefault
+// @ParametersAreNonnullByDefault
 package equus.carbine.patternmatch;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 

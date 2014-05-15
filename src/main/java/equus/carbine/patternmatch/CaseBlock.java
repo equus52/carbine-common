@@ -1,6 +1,8 @@
 package equus.carbine.patternmatch;
 
+import javax.annotation.Nullable;
+
 public interface CaseBlock<S> {
 
-  boolean matchAndAccept(S subject);
+  boolean matchAndAccept(@Nullable S subject);
 }
