@@ -6,30 +6,22 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 
-import lombok.experimental.ExtensionMethod;
-
 import org.junit.Test;
 
-@ExtensionMethod(PatternMatchers.class)
 public class PatternMatchersTest {
 
   @Test
   public void match_case_class() {
     String str = "test";
-    str.match(//
-        case_(Integer.class, (Integer i) -> fail()), // not compile error... not type safe
-        case_class(String.class, s -> assertThat(s, is(str))), //
-        case_default(o -> fail()));
-
     subject(str).matches(//
         // case_(Integer.class, (Integer i) -> fail()), // compile error! type safe
         case_(String.class, (String s) -> assertThat(s, is(str))), //
         case_default(o -> fail()));
 
-    Integer integer = 1;
-    integer.match(//
+    Number integer = 1;
+    subject(integer).matches(//
         case_(Integer.class, (Integer i) -> assertThat(i, is(integer))), //
-        case_(String.class, (String s) -> fail()), //
+        case_(Double.class, (Double s) -> fail()), //
         case_default(o -> fail()));
 
   }
@@ -38,9 +30,9 @@ public class PatternMatchersTest {
   public void match_case_default() {
 
     BigDecimal num = BigDecimal.ZERO;
-    num.match(//
-        case_(Integer.class, (Integer i) -> fail()), //
-        case_(String.class, (String s) -> fail()), //
+    subject(num).matches(//
+        case_(BigDecimal.ONE, o -> fail()), //
+        case_(BigDecimal.TEN, o -> fail()), //
         case_default(o -> assertThat(o, is(num))));
   }
 
@@ -48,9 +40,19 @@ public class PatternMatchersTest {
   public void match_case_value() {
 
     BigDecimal num = BigDecimal.ZERO;
-    num.match(//
+    subject(num).matches(//
         case_(BigDecimal.ONE, o -> fail()), //
         case_(BigDecimal.ZERO, o -> assertThat(o, is(num))), //
+        case_default(o -> fail()));
+  }
+
+  @Test
+  public void match_case_matcher() {
+
+    String str = "test";
+    subject(str).matches(//
+        case_(is("test2"), (String s) -> fail()), //
+        case_(startsWith("te"), (String s) -> assertThat(s, is(str))), //
         case_default(o -> fail()));
   }
 }
