@@ -1,6 +1,6 @@
 package equus.carbine.patternmatch;
 
-public interface CaseBlock<T> {
+public interface CaseBlock<S> {
 
-  boolean matchAndAccept(T subject);
+  boolean matchAndAccept(S subject);
 }

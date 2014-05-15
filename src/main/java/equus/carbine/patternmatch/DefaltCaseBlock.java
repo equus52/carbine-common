@@ -5,12 +5,12 @@ import java.util.function.Consumer;
 import lombok.Value;
 
 @Value
-public class DefaltCaseBlock<T> implements CaseBlock<T> {
+public class DefaltCaseBlock<S> implements CaseBlock<S> {
 
-  Consumer<T> consumer;
+  Consumer<S> consumer;
 
   @Override
-  public boolean matchAndAccept(T subject) {
+  public boolean matchAndAccept(S subject) {
     consumer.accept(subject);
     return true;
   }

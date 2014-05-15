@@ -17,8 +17,13 @@ public class PatternMatchersTest {
   public void match_case_class() {
     String str = "test";
     str.match(//
-        case_(Integer.class, (Integer i) -> fail()), //
+        case_(Integer.class, (Integer i) -> fail()), // not compile error... not type safe
         case_class(String.class, s -> assertThat(s, is(str))), //
+        case_default(o -> fail()));
+
+    subject(str).matches(//
+        // case_(Integer.class, (Integer i) -> fail()), // compile error! type safe
+        case_(String.class, (String s) -> assertThat(s, is(str))), //
         case_default(o -> fail()));
 
     Integer integer = 1;

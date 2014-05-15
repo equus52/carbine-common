@@ -4,13 +4,14 @@ import lombok.Value;
 import lombok.val;
 
 @Value
-public class PatternMatcher<T> {
+public class PatternMatcher<S> {
 
-  T obj;
+  S subject;
 
-  public void match(CaseBlock<T>... caseBlocks) {
+  @SafeVarargs
+  public final void matches(CaseBlock<S>... caseBlocks) {
     for (val caseBlock : caseBlocks) {
-      if (caseBlock.matchAndAccept(obj)) {
+      if (caseBlock.matchAndAccept(subject)) {
         return;
       }
     }

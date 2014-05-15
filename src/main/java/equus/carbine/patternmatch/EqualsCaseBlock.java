@@ -5,14 +5,14 @@ import java.util.function.Consumer;
 import lombok.Value;
 
 @Value
-public class EqualsCaseBlock<T> implements CaseBlock<T> {
+public class EqualsCaseBlock<S> implements CaseBlock<S> {
 
-  T matchValue;
+  S matchValue;
 
-  Consumer<T> consumer;
+  Consumer<S> consumer;
 
   @Override
-  public boolean matchAndAccept(T subject) {
+  public boolean matchAndAccept(S subject) {
     if (!matchValue.equals(subject)) {
       return false;
     }
