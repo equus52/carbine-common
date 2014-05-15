@@ -12,7 +12,6 @@ public final class PatternMatchers {
     return new PatternMatcher<S>(subject);
   }
 
-  @Deprecated
   @SafeVarargs
   public static <S> void match(S subject, CaseBlock<S>... caseBlocks) {
     new PatternMatcher<S>(subject).matches(caseBlocks);
