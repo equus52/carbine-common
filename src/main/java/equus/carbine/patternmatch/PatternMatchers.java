@@ -2,6 +2,7 @@ package equus.carbine.patternmatch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
@@ -19,7 +20,7 @@ public final class PatternMatchers {
 
   @SafeVarargs
   public static <S> void match(@Nullable S subject, @Nonnull CaseBlock<S>... caseBlocks) {
-    new PatternMatcher<S>(subject).matches(caseBlocks);
+    subject(subject).matches(caseBlocks);
   }
 
   public static <S> CaseBlock<S> case_default(@Nonnull Consumer<S> consumer) {
@@ -58,4 +59,20 @@ public final class PatternMatchers {
     return new DisjunctionCaseBlock<S>(matchValues, consumer);
   }
 
+  public static <T> OptionalMatcher<T> subject(@Nonnull Optional<T> subject) {
+    return new OptionalMatcher<T>(subject);
+  }
+
+  public static <T> void match(@Nonnull Optional<T> subject, @Nonnull SomeCaseBlock<T> someCaseBlock,
+      NoneCaseBlock noneCaseBlock) {
+    subject(subject).matches(someCaseBlock, noneCaseBlock);
+  }
+
+  public static <T> SomeCaseBlock<T> case_Some(@Nonnull Consumer<T> consumer) {
+    return new SomeCaseBlock<>(consumer);
+  }
+
+  public static NoneCaseBlock case_None(@Nonnull Block block) {
+    return new NoneCaseBlock(block);
+  }
 }

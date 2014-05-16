@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -20,6 +21,10 @@ public class PatternMatchersTest {
 
     Number integer = 1;
     match(integer,//
+        case_(Integer.class, (Integer i) -> assertThat(i, is(integer))), //
+        case_(Double.class, (Double s) -> fail()), //
+        case_default(o -> fail()));
+    subject(integer).matches(//
         case_(Integer.class, (Integer i) -> assertThat(i, is(integer))), //
         case_(Double.class, (Double s) -> fail()), //
         case_default(o -> fail()));
@@ -96,5 +101,19 @@ public class PatternMatchersTest {
           case_("test1", "test2", "test", (String s) -> assertThat(s, is(str))), //
           case_default(o -> fail()));
     }
+  }
+
+  @Test
+  public void match_option() {
+    String str = "test";
+    Optional<String> opt = Optional.ofNullable(str);
+    match(opt, //
+        case_Some((String s) -> assertThat(s, is(str))), //
+        case_None(() -> fail()));
+
+    Optional<String> empty = Optional.empty();
+    match(empty, //
+        case_Some((String s) -> fail()), //
+        case_None(() -> assertThat(empty.isPresent(), is(false))));
   }
 }
