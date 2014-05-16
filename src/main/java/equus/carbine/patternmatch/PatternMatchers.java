@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -64,7 +66,7 @@ public final class PatternMatchers {
   }
 
   public static <T> void match(@Nonnull Optional<T> subject, @Nonnull SomeCaseBlock<T> someCaseBlock,
-      NoneCaseBlock noneCaseBlock) {
+      @Nonnull NoneCaseBlock noneCaseBlock) {
     subject(subject).matches(someCaseBlock, noneCaseBlock);
   }
 
@@ -74,5 +76,18 @@ public final class PatternMatchers {
 
   public static NoneCaseBlock case_None(@Nonnull Block block) {
     return new NoneCaseBlock(block);
+  }
+
+  public static <T, R> R match(@Nonnull Optional<T> subject, @Nonnull SomeCaseFunction<T, R> someCaseFunction,
+      @Nonnull NoneCaseFunction<R> noneCaseFunction) {
+    return subject(subject).matches(someCaseFunction, noneCaseFunction);
+  }
+
+  public static <T, R> SomeCaseFunction<T, R> case_Some(@Nonnull Function<T, R> function) {
+    return new SomeCaseFunction<>(function);
+  }
+
+  public static <R> NoneCaseFunction<R> case_None(@Nonnull Supplier<R> supplier) {
+    return new NoneCaseFunction<>(supplier);
   }
 }

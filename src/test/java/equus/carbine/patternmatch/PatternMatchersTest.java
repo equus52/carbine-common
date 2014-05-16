@@ -116,4 +116,20 @@ public class PatternMatchersTest {
         case_Some((String s) -> fail()), //
         case_None(() -> assertThat(empty.isPresent(), is(false))));
   }
+
+  @Test
+  public void match_option_return() {
+    String str = "test";
+    Optional<String> opt = Optional.ofNullable(str);
+    int result1 = match(opt, //
+        case_Some((String s) -> 0), //
+        case_None(() -> -1));
+    assertThat(result1, is(0));
+
+    Optional<String> empty = Optional.empty();
+    int result2 = match(empty, //
+        case_Some((String s) -> 0), //
+        case_None(() -> -1));
+    assertThat(result2, is(-1));
+  }
 }
