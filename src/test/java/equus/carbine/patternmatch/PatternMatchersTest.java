@@ -12,23 +12,24 @@ import org.junit.Test;
 public class PatternMatchersTest {
 
   @Test
-  public void match_case_class() {
-    String str = "test";
-    match(str,//
-        // case_(Integer.class, (Integer i) -> fail()), // compile error! type safe
-        case_(String.class, (String s) -> assertThat(s, is(str))), //
-        case_default(o -> fail()));
+  public void match_case_value() {
 
-    Number integer = 1;
-    match(integer,//
-        case_(Integer.class, (Integer i) -> assertThat(i, is(integer))), //
-        case_(Double.class, (Double s) -> fail()), //
+    BigDecimal num = BigDecimal.ZERO;
+    match(num, //
+        case_(BigDecimal.ONE, o -> fail()), //
+        case_(BigDecimal.ZERO, o -> assertThat(o, is(num))), //
         case_default(o -> fail()));
-    subject(integer).matches(//
-        case_(Integer.class, (Integer i) -> assertThat(i, is(integer))), //
-        case_(Double.class, (Double s) -> fail()), //
-        case_default(o -> fail()));
+  }
 
+  @Test
+  public void match_case_value_return() {
+
+    BigDecimal num = BigDecimal.ZERO;
+    Optional<Integer> result = match(num, //
+        _case_(BigDecimal.ONE, (BigDecimal o) -> -1), //
+        _case_(BigDecimal.ZERO, o -> 0), //
+        _case_default(o -> -1));
+    assertThat(result.get(), is(0));
   }
 
   @Test
@@ -42,13 +43,33 @@ public class PatternMatchersTest {
   }
 
   @Test
-  public void match_case_value() {
+  public void match_case_default_return() {
 
     BigDecimal num = BigDecimal.ZERO;
-    match(num, //
-        case_(BigDecimal.ONE, o -> fail()), //
-        case_(BigDecimal.ZERO, o -> assertThat(o, is(num))), //
+    Optional<Integer> result = match(num, //
+        _case_(BigDecimal.ONE, o -> -1), //
+        _case_(BigDecimal.TEN, o -> -1), //
+        _case_default(o -> null));
+    assertThat(result.isPresent(), is(false));
+  }
+
+  @Test
+  public void match_case_class() {
+    Number integer = 1;
+    match(integer,//
+        case_(Integer.class, (Integer i) -> assertThat(i, is(integer))), //
+        case_(Double.class, (Double s) -> fail()), //
         case_default(o -> fail()));
+  }
+
+  @Test
+  public void match_case_class_return() {
+    Number integer = 1;
+    Optional<String> result = match(integer,//
+        _case_(Integer.class, (Integer i) -> "OK"), //
+        _case_(Double.class, (Double s) -> "NG"), //
+        _case_default(o -> "NG"));
+    assertThat(result.get(), is("OK"));
   }
 
   @Test
@@ -108,7 +129,7 @@ public class PatternMatchersTest {
     String str = "test";
     Optional<String> opt = Optional.ofNullable(str);
     match(opt, //
-        case_Some((String s) -> assertThat(s, is(str))), //
+        case_Some(s -> assertThat(s, is(str))), //
         case_None(() -> fail()));
 
     Optional<String> empty = Optional.empty();
@@ -122,14 +143,14 @@ public class PatternMatchersTest {
     String str = "test";
     Optional<String> opt = Optional.ofNullable(str);
     int result1 = match(opt, //
-        case_Some((String s) -> 0), //
-        case_None(() -> -1));
+        _case_Some(s -> 0), //
+        _case_None(() -> -1));
     assertThat(result1, is(0));
 
     Optional<String> empty = Optional.empty();
     int result2 = match(empty, //
-        case_Some((String s) -> 0), //
-        case_None(() -> -1));
+        _case_Some(s -> 0), //
+        _case_None(() -> -1));
     assertThat(result2, is(-1));
   }
 }

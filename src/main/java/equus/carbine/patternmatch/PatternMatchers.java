@@ -17,7 +17,7 @@ public final class PatternMatchers {
   private PatternMatchers() {}
 
   public static <S> PatternMatcher<S> subject(@Nullable S subject) {
-    return new PatternMatcher<S>(subject);
+    return new PatternMatcher<>(subject);
   }
 
   @SafeVarargs
@@ -25,31 +25,49 @@ public final class PatternMatchers {
     subject(subject).matches(caseBlocks);
   }
 
+  @SafeVarargs
+  public static <S, R> Optional<R> match(@Nullable S subject, @Nonnull CaseFunction<S, R>... caseFunctions) {
+    return subject(subject).matches(caseFunctions);
+  }
+
+  public static <S> CaseBlock<S> case_(@Nonnull S matchValue, @Nonnull Consumer<S> consumer) {
+    return new EqualsCaseBlock<>(matchValue, consumer);
+  }
+
+  public static <S, R> CaseFunction<S, R> _case_(@Nonnull S matchValue, @Nonnull Function<S, R> function) {
+    return new EqualsCaseFunction<>(matchValue, function);
+  }
+
   public static <S> CaseBlock<S> case_default(@Nonnull Consumer<S> consumer) {
     return new DefaltCaseBlock<>(consumer);
   }
 
-  public static <S> CaseBlock<S> case_(@Nonnull S matchValue, @Nonnull Consumer<S> consumer) {
-    return new EqualsCaseBlock<S>(matchValue, consumer);
-  }
-
-  public static <S> CaseBlock<S> case_null(@Nonnull Block block) {
-    return new NullCaseBlock<S>(block);
+  public static <S, R> CaseFunction<S, R> _case_default(@Nonnull Function<S, R> function) {
+    return new DefaltCaseFunction<>(function);
   }
 
   public static <S, T extends S> CaseBlock<S> case_(@Nonnull Class<T> matchClass, @Nonnull Consumer<T> consumer) {
-    return new ClassCaseBlock<S, T>(matchClass, consumer);
+    return new ClassCaseBlock<>(matchClass, consumer);
+  }
+
+  public static <S, T extends S, R> CaseFunction<S, R> _case_(@Nonnull Class<T> matchClass,
+      @Nonnull Function<T, R> function) {
+    return new ClassCaseFunction<>(matchClass, function);
+  }
+
+  public static <S> CaseBlock<S> case_null(@Nonnull Block block) {
+    return new NullCaseBlock<>(block);
   }
 
   public static <S> CaseBlock<S> case_(@Nonnull Matcher<S> matcher, @Nonnull Consumer<S> consumer) {
-    return new MatcherCaseBlock<S>(matcher, consumer);
+    return new MatcherCaseBlock<>(matcher, consumer);
   }
 
   public static <S> CaseBlock<S> case_(@Nonnull S matchValue1, @Nonnull S matchValue2, @Nonnull Consumer<S> consumer) {
     List<S> matchValues = new ArrayList<>();
     matchValues.add(matchValue1);
     matchValues.add(matchValue2);
-    return new DisjunctionCaseBlock<S>(matchValues, consumer);
+    return new DisjunctionCaseBlock<>(matchValues, consumer);
   }
 
   public static <S> CaseBlock<S> case_(@Nonnull S matchValue1, @Nonnull S matchValue2, @Nonnull S matchValue3,
@@ -58,11 +76,11 @@ public final class PatternMatchers {
     matchValues.add(matchValue1);
     matchValues.add(matchValue2);
     matchValues.add(matchValue3);
-    return new DisjunctionCaseBlock<S>(matchValues, consumer);
+    return new DisjunctionCaseBlock<>(matchValues, consumer);
   }
 
   public static <T> OptionalMatcher<T> subject(@Nonnull Optional<T> subject) {
-    return new OptionalMatcher<T>(subject);
+    return new OptionalMatcher<>(subject);
   }
 
   public static <T> void match(@Nonnull Optional<T> subject, @Nonnull SomeCaseBlock<T> someCaseBlock,
@@ -70,24 +88,25 @@ public final class PatternMatchers {
     subject(subject).matches(someCaseBlock, noneCaseBlock);
   }
 
+  public static <T, R> R match(@Nonnull Optional<T> subject, @Nonnull SomeCaseFunction<T, R> someCaseFunction,
+      @Nonnull NoneCaseFunction<R> noneCaseFunction) {
+    return subject(subject).matches(someCaseFunction, noneCaseFunction);
+  }
+
   public static <T> SomeCaseBlock<T> case_Some(@Nonnull Consumer<T> consumer) {
     return new SomeCaseBlock<>(consumer);
+  }
+
+  public static <T, R> SomeCaseFunction<T, R> _case_Some(@Nonnull Function<T, R> function) {
+    return new SomeCaseFunction<>(function);
   }
 
   public static NoneCaseBlock case_None(@Nonnull Block block) {
     return new NoneCaseBlock(block);
   }
 
-  public static <T, R> R match(@Nonnull Optional<T> subject, @Nonnull SomeCaseFunction<T, R> someCaseFunction,
-      @Nonnull NoneCaseFunction<R> noneCaseFunction) {
-    return subject(subject).matches(someCaseFunction, noneCaseFunction);
-  }
-
-  public static <T, R> SomeCaseFunction<T, R> case_Some(@Nonnull Function<T, R> function) {
-    return new SomeCaseFunction<>(function);
-  }
-
-  public static <R> NoneCaseFunction<R> case_None(@Nonnull Supplier<R> supplier) {
+  public static <R> NoneCaseFunction<R> _case_None(@Nonnull Supplier<R> supplier) {
     return new NoneCaseFunction<>(supplier);
   }
+
 }
