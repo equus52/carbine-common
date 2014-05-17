@@ -73,6 +73,25 @@ public class PatternMatchersTest {
   }
 
   @Test
+  public void match_case_null() {
+    String str = null;
+    match(str, //
+        case_(String.class, (String s) -> fail()), //
+        case_null(() -> assertThat(str, is((String) null))), //
+        case_default(o -> fail()));
+  }
+
+  @Test
+  public void match_case_null_return() {
+    String str = null;
+    Optional<Integer> result = match(str, //
+        _case_(String.class, (String s) -> -1), //
+        _case_null(() -> 0), //
+        _case_default(o -> -1));
+    assertThat(result.get(), is(0));
+  }
+
+  @Test
   public void match_case_matcher() {
     {
       String str = "test";
@@ -91,12 +110,23 @@ public class PatternMatchersTest {
   }
 
   @Test
-  public void match_case_null() {
-    String str = null;
-    match(str, //
-        case_(String.class, (String s) -> fail()), //
-        case_null(() -> assertThat(str, is((String) null))), //
-        case_default(o -> fail()));
+  public void match_case_matcher_return() {
+    {
+      String str = "test";
+      Optional<Integer> result = match(str, //
+          _case_(is("test2"), (String s) -> -1), //
+          _case_(startsWith("te"), (String s) -> 0), //
+          _case_default(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+    {
+      String str = null;
+      Optional<Integer> result = match(str, //
+          _case_(is("test2"), (String s) -> -1), //
+          _case_(is((String) null), (String s) -> 0), //
+          _case_default(o -> -1));
+      assertThat(result.get(), is(0));
+    }
   }
 
   @Test
@@ -121,6 +151,34 @@ public class PatternMatchersTest {
           case_("test1", "test2", "test3", (String s) -> fail()), //
           case_("test1", "test2", "test", (String s) -> assertThat(s, is(str))), //
           case_default(o -> fail()));
+    }
+  }
+
+  @Test
+  public void match_case_disjunction_return() {
+    {
+      String str = "test";
+      Optional<Integer> result = match(str, //
+          _case_("test1", "test2", (String s) -> -1), //
+          _case_("test1", "test", (String s) -> 0), //
+          _case_default(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+    {
+      String str = "test";
+      Optional<Integer> result = match(str, //
+          _case_("test1", "test2", (String s) -> -1), //
+          _case_("test", "test2", (String s) -> 0), //
+          _case_default(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+    {
+      String str = "test";
+      Optional<Integer> result = match(str, //
+          _case_("test1", "test2", "test3", (String s) -> -1), //
+          _case_("test1", "test2", "test", (String s) -> 0), //
+          _case_default(o -> -1));
+      assertThat(result.get(), is(0));
     }
   }
 
