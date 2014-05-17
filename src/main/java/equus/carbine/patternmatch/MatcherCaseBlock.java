@@ -17,12 +17,12 @@ public class MatcherCaseBlock<S> implements CaseBlock<S> {
   Consumer<S> consumer;
 
   @Override
-  public boolean matchAndAccept(@Nullable S subject) {
-    if (matcher.matches(subject)) {
-      consumer.accept(subject);
-      return true;
-    }
-    return false;
+  public boolean match(@Nullable S subject) {
+    return matcher.matches(subject);
   }
 
+  @Override
+  public void accept(S subject) {
+    consumer.accept(subject);
+  }
 }

@@ -16,14 +16,18 @@ public class DisjunctionCaseBlock<S> implements CaseBlock<S> {
   Consumer<S> consumer;
 
   @Override
-  public boolean matchAndAccept(@Nullable S subject) {
+  public boolean match(@Nullable S subject) {
     for (S matchValue : matchValues) {
       if (matchValue.equals(subject)) {
-        consumer.accept(subject);
         return true;
       }
     }
     return false;
+  }
+
+  @Override
+  public void accept(S subject) {
+    consumer.accept(subject);
   }
 
 }

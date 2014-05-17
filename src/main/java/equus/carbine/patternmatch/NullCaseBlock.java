@@ -11,12 +11,12 @@ public class NullCaseBlock<S> implements CaseBlock<S> {
   Block block;
 
   @Override
-  public boolean matchAndAccept(@Nullable S subject) {
-    if (subject == null) {
-      block.apply();
-      return true;
-    }
-    return false;
+  public boolean match(@Nullable S subject) {
+    return subject == null;
   }
 
+  @Override
+  public void accept(S subject) {
+    block.apply();
+  }
 }
