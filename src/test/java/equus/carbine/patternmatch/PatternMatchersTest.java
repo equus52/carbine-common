@@ -92,6 +92,25 @@ public class PatternMatchersTest {
   }
 
   @Test
+  public void match_case_not_null() {
+    String str = "test";
+    match(str, //
+        case_null(() -> fail()), //
+        case_not_null((String s) -> assertThat(s, is(str))), //
+        case_default(o -> fail()));
+  }
+
+  @Test
+  public void match_case_not_null_return() {
+    String str = "test";
+    Optional<Integer> result = match(str, //
+        _case_null(() -> -1), //
+        _case_not_null((String s) -> 0), //
+        _case_default(o -> -1));
+    assertThat(result.get(), is(0));
+  }
+
+  @Test
   public void match_case_matcher() {
     {
       String str = "test";

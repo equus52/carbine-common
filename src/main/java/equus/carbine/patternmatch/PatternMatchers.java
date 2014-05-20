@@ -68,6 +68,14 @@ public final class PatternMatchers {
     return new NullCase<S>().function(supplier);
   }
 
+  public static <S> CaseBlock<S> case_not_null(@Nonnull Consumer<S> consumer) {
+    return new NotNullCase<S>().block(consumer);
+  }
+
+  public static <S, R> CaseFunction<S, R> _case_not_null(@Nonnull Function<S, R> function) {
+    return new NotNullCase<S>().function(function);
+  }
+
   public static <S> CaseBlock<S> case_(@Nonnull Matcher<S> matcher, @Nonnull Consumer<S> consumer) {
     return new MatcherCase<S>(matcher).block(consumer);
   }
