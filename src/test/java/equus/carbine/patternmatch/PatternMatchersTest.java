@@ -73,6 +73,25 @@ public class PatternMatchersTest {
   }
 
   @Test
+  public void match_case_class_boolean() {
+    Number integer = 1;
+    match(integer,//
+        caseClass(Integer.class, i -> i > 0, i -> assertThat(i, is(integer))), //
+        caseClass(Double.class, i -> i == 0, s -> fail()), //
+        caseDefault(o -> fail()));
+  }
+
+  @Test
+  public void match_case_class_boolean_return() {
+    Number integer = 1;
+    Optional<String> result = match(integer,//
+        _caseClass(Integer.class, i -> i > 0, i -> "OK"), //
+        _caseClass(Double.class, i -> 1 == 0, s -> "NG"), //
+        _caseDefault(o -> "NG"));
+    assertThat(result.get(), is("OK"));
+  }
+
+  @Test
   public void match_case_null() {
     String str = null;
     match(str, //

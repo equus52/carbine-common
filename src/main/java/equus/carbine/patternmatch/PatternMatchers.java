@@ -52,15 +52,6 @@ public final class PatternMatchers {
     return new DefaltCase<S>().function(function);
   }
 
-  public static <S, T extends S> CaseBlock<S> caseClass(@Nonnull Class<T> matchClass, @Nonnull Consumer<T> consumer) {
-    return new ClassCase<S, T>(matchClass).block(consumer);
-  }
-
-  public static <S, T extends S, R> CaseFunction<S, R> _caseClass(@Nonnull Class<T> matchClass,
-      @Nonnull Function<T, R> function) {
-    return new ClassCase<S, T>(matchClass).function(function);
-  }
-
   public static <S> CaseBlock<S> caseNull(@Nonnull Block block) {
     return new NullCase<S>().block(block);
   }
@@ -91,6 +82,25 @@ public final class PatternMatchers {
 
   public static <S, R> CaseFunction<S, R> _caseMatcher(@Nonnull Matcher<S> matcher, @Nonnull Function<S, R> function) {
     return new MatcherCase<S>(matcher).function(function);
+  }
+
+  public static <S, T extends S> CaseBlock<S> caseClass(@Nonnull Class<T> matchClass, @Nonnull Consumer<T> consumer) {
+    return new ClassCase<S, T>(matchClass).block(consumer);
+  }
+
+  public static <S, T extends S, R> CaseFunction<S, R> _caseClass(@Nonnull Class<T> matchClass,
+      @Nonnull Function<T, R> function) {
+    return new ClassCase<S, T>(matchClass).function(function);
+  }
+
+  public static <S, T extends S> CaseBlock<S> caseClass(@Nonnull Class<T> matchClass, @Nonnull Predicate<T> predicate,
+      @Nonnull Consumer<T> consumer) {
+    return new ClassPredicateCase<S, T>(matchClass, predicate).block(consumer);
+  }
+
+  public static <S, T extends S, R> CaseFunction<S, R> _caseClass(@Nonnull Class<T> matchClass,
+      @Nonnull Predicate<T> predicate, @Nonnull Function<T, R> function) {
+    return new ClassPredicateCase<S, T>(matchClass, predicate).function(function);
   }
 
   public static <S> CaseBlock<S> caseValues(@Nonnull S matchValue1, @Nonnull S matchValue2,
