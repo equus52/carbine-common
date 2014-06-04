@@ -77,7 +77,7 @@ public final class PatternMatchers {
     return new NotNullCase<S>().function(function);
   }
 
-  public static <S> CaseBlock<S> caseBool(@Nonnull Predicate<S> predicate, @Nonnull Consumer<S> consumer) {
+  public static <S> CaseBlock<S> caseBoolean(@Nonnull Predicate<S> predicate, @Nonnull Consumer<S> consumer) {
     return new PredicateCase<S>(predicate).block(consumer);
   }
 
