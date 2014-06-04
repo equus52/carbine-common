@@ -103,6 +103,16 @@ public final class PatternMatchers {
     return new ClassPredicateCase<S, T>(matchClass, predicate).function(function);
   }
 
+  public static <S, T extends S> CaseBlock<S> caseClass(@Nonnull Class<T> matchClass, @Nonnull Matcher<T> matcher,
+      @Nonnull Consumer<T> consumer) {
+    return new ClassMatcherCase<S, T>(matchClass, matcher).block(consumer);
+  }
+
+  public static <S, T extends S, R> CaseFunction<S, R> _caseClass(@Nonnull Class<T> matchClass,
+      @Nonnull Matcher<T> matcher, @Nonnull Function<T, R> function) {
+    return new ClassMatcherCase<S, T>(matchClass, matcher).function(function);
+  }
+
   public static <S> CaseBlock<S> caseValues(@Nonnull S matchValue1, @Nonnull S matchValue2,
       @Nonnull Consumer<S> consumer) {
     List<S> matchValues = new ArrayList<>();
