@@ -1,4 +1,4 @@
-package equus.carbine.patternmatch;
+package equus.carbine.patternmatch.cases;
 
 import java.util.function.Predicate;
 

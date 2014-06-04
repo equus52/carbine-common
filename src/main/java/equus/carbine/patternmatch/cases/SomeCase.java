@@ -1,4 +1,4 @@
-package equus.carbine.patternmatch;
+package equus.carbine.patternmatch.cases;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -6,6 +6,9 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import equus.carbine.patternmatch.CaseBlock;
+import equus.carbine.patternmatch.CaseFunction;
+import equus.carbine.patternmatch.CaseMatcher;
 import lombok.Value;
 
 @Value

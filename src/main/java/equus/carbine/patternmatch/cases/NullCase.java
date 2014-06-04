@@ -1,7 +1,10 @@
-package equus.carbine.patternmatch;
+package equus.carbine.patternmatch.cases;
 
 import javax.annotation.Nullable;
 
+import equus.carbine.patternmatch.CaseMatcher;
+import equus.carbine.patternmatch.NoArgCaseBlockable;
+import equus.carbine.patternmatch.NoArgCaseFanctionable;
 import lombok.Value;
 
 @Value

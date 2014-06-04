@@ -5,10 +5,10 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import lombok.Value;
-import equus.carbine.patternmatch.NoneCase.NoneCaseBlock;
-import equus.carbine.patternmatch.NoneCase.NoneCaseFunction;
-import equus.carbine.patternmatch.SomeCase.SomeCaseBlock;
-import equus.carbine.patternmatch.SomeCase.SomeCaseFunction;
+import equus.carbine.patternmatch.cases.NoneCase.NoneCaseBlock;
+import equus.carbine.patternmatch.cases.NoneCase.NoneCaseFunction;
+import equus.carbine.patternmatch.cases.SomeCase.SomeCaseBlock;
+import equus.carbine.patternmatch.cases.SomeCase.SomeCaseFunction;
 
 @Value
 public class OptionalMatcher<T> {

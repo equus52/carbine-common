@@ -13,10 +13,22 @@ import javax.annotation.Nullable;
 
 import org.hamcrest.Matcher;
 
-import equus.carbine.patternmatch.NoneCase.NoneCaseBlock;
-import equus.carbine.patternmatch.NoneCase.NoneCaseFunction;
-import equus.carbine.patternmatch.SomeCase.SomeCaseBlock;
-import equus.carbine.patternmatch.SomeCase.SomeCaseFunction;
+import equus.carbine.patternmatch.cases.ClassCase;
+import equus.carbine.patternmatch.cases.ClassMatcherCase;
+import equus.carbine.patternmatch.cases.ClassPredicateCase;
+import equus.carbine.patternmatch.cases.DefaltCase;
+import equus.carbine.patternmatch.cases.DisjunctionCase;
+import equus.carbine.patternmatch.cases.EqualsCase;
+import equus.carbine.patternmatch.cases.MatcherCase;
+import equus.carbine.patternmatch.cases.NoneCase;
+import equus.carbine.patternmatch.cases.NotNullCase;
+import equus.carbine.patternmatch.cases.NullCase;
+import equus.carbine.patternmatch.cases.PredicateCase;
+import equus.carbine.patternmatch.cases.SomeCase;
+import equus.carbine.patternmatch.cases.NoneCase.NoneCaseBlock;
+import equus.carbine.patternmatch.cases.NoneCase.NoneCaseFunction;
+import equus.carbine.patternmatch.cases.SomeCase.SomeCaseBlock;
+import equus.carbine.patternmatch.cases.SomeCase.SomeCaseFunction;
 
 public final class PatternMatchers {
 

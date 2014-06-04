@@ -1,4 +1,4 @@
-package equus.carbine.patternmatch;
+package equus.carbine.patternmatch.cases;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

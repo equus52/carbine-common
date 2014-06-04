@@ -1,5 +1,7 @@
-package equus.carbine.patternmatch;
+package equus.carbine.patternmatch.cases;
 
+import equus.carbine.patternmatch.CaseMatcher;
+import equus.carbine.patternmatch.GeneralCaseBlockFunctionable;
 import lombok.Value;
 
 @Value
