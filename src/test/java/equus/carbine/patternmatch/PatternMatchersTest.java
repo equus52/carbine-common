@@ -336,7 +336,7 @@ public class PatternMatchersTest {
   }
 
   @Test
-  public void match_option() {
+  public void match_case_option() {
     String str = "test";
     Optional<String> opt = Optional.ofNullable(str);
     match(opt, //
@@ -350,7 +350,7 @@ public class PatternMatchersTest {
   }
 
   @Test
-  public void match_option_return() {
+  public void match_case_option_return() {
     String str = "test";
     Optional<String> opt = Optional.ofNullable(str);
     int result1 = match(opt, //
@@ -364,4 +364,44 @@ public class PatternMatchersTest {
         _caseNone(() -> -1));
     assertThat(result2, is(-1));
   }
+
+  @Test
+  public void match_case_boolean_2() {
+    {
+      int num1 = 5;
+      int num2 = 9;
+      // match(num1, num2, //
+      // caseBoolean(i -> i > 5, i -> i > 5, (i1, i2) -> fail()), //
+      // caseBoolean(i -> i == 5, i -> i == 9, (i1, i2) -> assertThat(i1, is(num1))), //
+      // caseDefault((i1, i2) -> fail()));
+    }
+    {
+      String str = null;
+      match(str, //
+          caseBoolean(s -> s != null, s -> fail()), //
+          caseBoolean(s -> s == null, s -> assertThat(s, is(str))), //
+          caseDefault(o -> fail()));
+    }
+  }
+
+  @Test
+  public void match_case_boolean_2_return() {
+    {
+      int num = 5;
+      Optional<Integer> result = match(num, //
+          _caseBoolean(i -> i > 5, i -> -1), //
+          _caseBoolean(i -> i == 5, i -> i * 0), //
+          _caseDefault(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+    {
+      String str = null;
+      Optional<Integer> result = match(str, //
+          _caseBoolean(s -> s != null, s -> -1), //
+          _caseBoolean(s -> s == null, s -> 0), //
+          _caseDefault(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+  }
+
 }

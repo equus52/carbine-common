@@ -3,6 +3,8 @@ package equus.carbine.patternmatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -27,6 +29,7 @@ import equus.carbine.patternmatch.cases.NoneCase.NoneCaseFunction;
 import equus.carbine.patternmatch.cases.NotNullCase;
 import equus.carbine.patternmatch.cases.NullCase;
 import equus.carbine.patternmatch.cases.PredicateCase;
+import equus.carbine.patternmatch.cases.PredicateCase2;
 import equus.carbine.patternmatch.cases.RegexCase;
 import equus.carbine.patternmatch.cases.SomeCase;
 import equus.carbine.patternmatch.cases.SomeCase.SomeCaseBlock;
@@ -216,4 +219,33 @@ public final class PatternMatchers {
     return new NoneCase().function(supplier);
   }
 
+  public static <S1, S2> PatternMatcher2<S1, S2> subject(@Nullable S1 subject1, @Nullable S2 subject2) {
+    return new PatternMatcher2<S1, S2>(subject1, subject2);
+  }
+
+  @SafeVarargs
+  public static <S1, S2> void match(@Nullable S1 subject1, @Nullable S2 subject2,
+      @Nonnull CaseBlock2<S1, S2>... caseBlocks) {
+    subject(subject1, subject2).matches(caseBlocks);
+  }
+
+  @SafeVarargs
+  public static <S1, S2, R> Optional<R> match(@Nullable S1 subject1, @Nullable S2 subject2,
+      @Nonnull CaseFunction2<S1, S2, R>... caseFunctions) {
+    return subject(subject1, subject2).matches(caseFunctions);
+  }
+
+  public static <S1, S2> CaseBlock2<S1, S2> caseBoolean(@Nonnull Predicate<S1> predicate1,
+      @Nonnull Predicate<S2> predicate2, @Nonnull BiConsumer<S1, S2> consumer) {
+    return new PredicateCase2<S1, S2>(predicate1, predicate2).block(consumer);
+  }
+
+  public static <S1, S2, R> CaseFunction2<S1, S2, R> _caseBoolean(@Nonnull Predicate<S1> predicate1,
+      @Nonnull Predicate<S2> predicate2, @Nonnull BiFunction<S1, S2, R> function) {
+    return new PredicateCase2<S1, S2>(predicate1, predicate2).function(function);
+  }
+
+  public static <S1, S2> CaseBlock2<S1, S2> caseDefault(@Nonnull BiConsumer<S1, S2> consumer) {
+    return new PredicateCase2<S1, S2>(s -> true, s -> true).block(consumer);
+  }
 }
