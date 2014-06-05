@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -223,6 +224,59 @@ public class PatternMatchersTest {
       Optional<Integer> result = match(str, //
           _caseMatcher(is("test2"), s -> -1), //
           _caseMatcher(is((String) null), s -> 0), //
+          _caseDefault(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+  }
+
+  @Test
+  public void match_case_regex() {
+    {
+      String str = "test";
+      match(str, //
+          caseRegex(Pattern.compile("^Te"), s -> fail()), //
+          caseRegex(Pattern.compile("^te"), s -> assertThat(s, is(str))), //
+          caseDefault(o -> fail()));
+    }
+    {
+      String str = "test";
+      match(str, //
+          caseRegex("^Te", s -> fail()), //
+          caseRegex("^te", s -> assertThat(s, is(str))), //
+          caseDefault(o -> fail()));
+    }
+    {
+      String str = "test";
+      match(str, //
+          caseRegex("^Te", Pattern.CASE_INSENSITIVE, s -> assertThat(s, is(str))), //
+          caseRegex("^te", s -> fail()), //
+          caseDefault(o -> fail()));
+    }
+  }
+
+  @Test
+  public void match_case_regex_return() {
+    {
+      String str = "test";
+      Optional<Integer> result = match(str, //
+          _caseRegex(Pattern.compile("^Te"), s -> -1), //
+          _caseRegex(Pattern.compile("^te"), s -> 0), //
+          _caseDefault(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+    {
+      String str = "test";
+      Optional<Integer> result = match(str, //
+          _caseRegex("^Te", s -> -1), //
+          _caseRegex("^te", s -> 0), //
+          _caseDefault(o -> -1));
+      assertThat(result.get(), is(0));
+    }
+    {
+      String str = "test";
+      Optional<Integer> result = match(str, //
+          _caseRegex("^Te", Pattern.CASE_INSENSITIVE, s -> 0), //
+          _caseRegex("^te", s -> -1), //
           _caseDefault(o -> -1));
       assertThat(result.get(), is(0));
     }

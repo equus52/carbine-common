@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,12 +22,13 @@ import equus.carbine.patternmatch.cases.DisjunctionCase;
 import equus.carbine.patternmatch.cases.EqualsCase;
 import equus.carbine.patternmatch.cases.MatcherCase;
 import equus.carbine.patternmatch.cases.NoneCase;
+import equus.carbine.patternmatch.cases.NoneCase.NoneCaseBlock;
+import equus.carbine.patternmatch.cases.NoneCase.NoneCaseFunction;
 import equus.carbine.patternmatch.cases.NotNullCase;
 import equus.carbine.patternmatch.cases.NullCase;
 import equus.carbine.patternmatch.cases.PredicateCase;
+import equus.carbine.patternmatch.cases.RegexCase;
 import equus.carbine.patternmatch.cases.SomeCase;
-import equus.carbine.patternmatch.cases.NoneCase.NoneCaseBlock;
-import equus.carbine.patternmatch.cases.NoneCase.NoneCaseFunction;
 import equus.carbine.patternmatch.cases.SomeCase.SomeCaseBlock;
 import equus.carbine.patternmatch.cases.SomeCase.SomeCaseFunction;
 
@@ -123,6 +125,31 @@ public final class PatternMatchers {
   public static <S, T extends S, R> CaseFunction<S, R> _caseClass(@Nonnull Class<T> matchClass,
       @Nonnull Matcher<T> matcher, @Nonnull Function<T, R> function) {
     return new ClassMatcherCase<S, T>(matchClass, matcher).function(function);
+  }
+
+  public static CaseBlock<String> caseRegex(@Nonnull Pattern pattern, @Nonnull Consumer<String> consumer) {
+    return new RegexCase(pattern).block(consumer);
+  }
+
+  public static <R> CaseFunction<String, R> _caseRegex(@Nonnull Pattern pattern, @Nonnull Function<String, R> function) {
+    return new RegexCase(pattern).function(function);
+  }
+
+  public static CaseBlock<String> caseRegex(@Nonnull String regex, @Nonnull Consumer<String> consumer) {
+    return new RegexCase(Pattern.compile(regex)).block(consumer);
+  }
+
+  public static <R> CaseFunction<String, R> _caseRegex(@Nonnull String regex, @Nonnull Function<String, R> function) {
+    return new RegexCase(Pattern.compile(regex)).function(function);
+  }
+
+  public static CaseBlock<String> caseRegex(@Nonnull String regex, int flags, @Nonnull Consumer<String> consumer) {
+    return new RegexCase(Pattern.compile(regex, flags)).block(consumer);
+  }
+
+  public static <R> CaseFunction<String, R> _caseRegex(@Nonnull String regex, int flags,
+      @Nonnull Function<String, R> function) {
+    return new RegexCase(Pattern.compile(regex, flags)).function(function);
   }
 
   public static <S> CaseBlock<S> caseValues(@Nonnull S matchValue1, @Nonnull S matchValue2,
