@@ -2,12 +2,13 @@ package equus.carbine.patternmatch.cases;
 
 import javax.annotation.Nullable;
 
-import equus.carbine.patternmatch.CaseMatcher;
-import equus.carbine.patternmatch.GeneralCaseBlockFunctionable;
-import lombok.Value;
+import equus.carbine.patternmatch.NoConvertCase;
 
-@Value
-public class NotNullCase<S> implements CaseMatcher<S>, GeneralCaseBlockFunctionable<S> {
+public class NotNullCase<S> implements NoConvertCase<S> {
+
+  public NotNullCase() {}
+
+  public NotNullCase(Class<S> clazz) {}
 
   @Override
   public boolean match(@Nullable S subject) {

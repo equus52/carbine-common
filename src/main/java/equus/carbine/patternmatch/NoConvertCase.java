@@ -1,6 +1,6 @@
 package equus.carbine.patternmatch;
 
-public interface GeneralCaseBlockFunctionable<S> extends CaseBlockable<S, S>, CaseFunctionable<S, S> {
+public interface NoConvertCase<S> extends Case<S, S> {
 
   @Override
   default S convert(S subject) {

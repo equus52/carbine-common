@@ -8,11 +8,9 @@ import javax.annotation.Nonnull;
 import equus.carbine.patternmatch.Block;
 import equus.carbine.patternmatch.CaseBlock;
 import equus.carbine.patternmatch.CaseFunction;
-import equus.carbine.patternmatch.CaseMatcher;
-import lombok.Value;
+import equus.carbine.patternmatch.NothingCase;
 
-@Value
-public class NoneCase implements CaseMatcher<Optional<?>> {
+public class NoneCase implements NothingCase<Optional<?>> {
 
   @Override
   public boolean match(@Nonnull Optional<?> subject) {
@@ -21,7 +19,8 @@ public class NoneCase implements CaseMatcher<Optional<?>> {
 
   public static abstract class NoneCaseBlock implements CaseBlock<Optional<?>> {}
 
-  public NoneCaseBlock block(@Nonnull Block block) {
+  @Override
+  public NoneCaseBlock then(@Nonnull Block block) {
     return new NoneCaseBlock() {
 
       @Override
@@ -38,7 +37,8 @@ public class NoneCase implements CaseMatcher<Optional<?>> {
 
   public static abstract class NoneCaseFunction<R> implements CaseFunction<Optional<?>, R> {}
 
-  public <R> NoneCaseFunction<R> function(@Nonnull Supplier<R> supplier) {
+  @Override
+  public <R> NoneCaseFunction<R> thenReturn(@Nonnull Supplier<R> supplier) {
     return new NoneCaseFunction<R>() {
 
       @Override

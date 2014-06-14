@@ -1,15 +1,19 @@
 package equus.carbine.patternmatch.cases;
 
+import java.util.function.Predicate;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import equus.carbine.patternmatch.CaseBlockable;
-import equus.carbine.patternmatch.CaseFunctionable;
-import equus.carbine.patternmatch.CaseMatcher;
+import org.hamcrest.Matcher;
 
-public class ClassCase<S, T extends S> implements CaseMatcher<S>, CaseBlockable<S, T>, CaseFunctionable<S, T> {
+import equus.carbine.patternmatch.Case;
+
+public class ClassCase<S, T extends S> implements Case<S, T> {
   @Nonnull
   private final Class<T> matchClass;
+  private Predicate<T> predicate;
+  private Matcher<T> matcher;
 
   public ClassCase(Class<T> matchClass) {
     this.matchClass = matchClass;
@@ -17,12 +21,32 @@ public class ClassCase<S, T extends S> implements CaseMatcher<S>, CaseBlockable<
 
   @Override
   public boolean match(@Nullable S subject) {
-    return matchClass.isInstance(subject);
+    if (!matchClass.isInstance(subject)) {
+      return false;
+    }
+    T converted = convert(subject);
+    if (predicate != null && !predicate.test(converted)) {
+      return false;
+    }
+    if (matcher != null && !matcher.matches(converted)) {
+      return false;
+    }
+    return true;
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public T convert(S subject) {
     return (T) subject;
+  }
+
+  public ClassCase<S, T> with(@Nonnull Predicate<T> predicate) {
+    this.predicate = predicate;
+    return this;
+  }
+
+  public ClassCase<S, T> with(@Nonnull Matcher<T> matcher) {
+    this.matcher = matcher;
+    return this;
   }
 }

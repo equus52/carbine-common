@@ -5,12 +5,11 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import equus.carbine.patternmatch.CaseMatcher;
-import equus.carbine.patternmatch.GeneralCaseBlockFunctionable;
 import lombok.Value;
+import equus.carbine.patternmatch.NoConvertCase;
 
 @Value
-public class PredicateCase<S> implements CaseMatcher<S>, GeneralCaseBlockFunctionable<S> {
+public class PredicateCase<S> implements NoConvertCase<S> {
   @Nonnull
   Predicate<S> predicate;
 

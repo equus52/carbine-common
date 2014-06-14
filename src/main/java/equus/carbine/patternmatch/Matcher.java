@@ -2,7 +2,7 @@ package equus.carbine.patternmatch;
 
 import javax.annotation.Nullable;
 
-public interface CaseMatcher<S> {
+public interface Matcher<S> {
 
   boolean match(@Nullable S subject);
 }

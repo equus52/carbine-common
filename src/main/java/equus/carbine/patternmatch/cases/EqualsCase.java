@@ -3,12 +3,11 @@ package equus.carbine.patternmatch.cases;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import equus.carbine.patternmatch.CaseMatcher;
-import equus.carbine.patternmatch.GeneralCaseBlockFunctionable;
 import lombok.Value;
+import equus.carbine.patternmatch.NoConvertCase;
 
 @Value
-public class EqualsCase<S> implements CaseMatcher<S>, GeneralCaseBlockFunctionable<S> {
+public class EqualsCase<S> implements NoConvertCase<S> {
   @Nonnull
   S matchValue;
 

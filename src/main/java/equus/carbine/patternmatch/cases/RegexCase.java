@@ -6,11 +6,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import lombok.Value;
-import equus.carbine.patternmatch.CaseMatcher;
-import equus.carbine.patternmatch.GeneralCaseBlockFunctionable;
+import equus.carbine.patternmatch.NoConvertCase;
 
 @Value
-public class RegexCase implements CaseMatcher<String>, GeneralCaseBlockFunctionable<String> {
+public class RegexCase implements NoConvertCase<String> {
   @Nonnull
   Pattern pattern;
 

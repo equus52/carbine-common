@@ -6,22 +6,30 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import equus.carbine.patternmatch.Case;
 import equus.carbine.patternmatch.CaseBlock;
 import equus.carbine.patternmatch.CaseFunction;
-import equus.carbine.patternmatch.CaseMatcher;
-import lombok.Value;
 
-@Value
-public class SomeCase<T> implements CaseMatcher<Optional<T>> {
+public class SomeCase<T> implements Case<Optional<T>, T> {
+
+  public SomeCase() {}
+
+  public SomeCase(Class<T> clazz) {}
 
   @Override
   public boolean match(@Nonnull Optional<T> subject) {
     return subject.isPresent();
   }
 
+  @Override
+  public T convert(Optional<T> subject) {
+    return subject.get();
+  }
+
   public static abstract class SomeCaseBlock<T1> implements CaseBlock<Optional<T1>> {}
 
-  public SomeCaseBlock<T> block(@Nonnull Consumer<T> consumer) {
+  @Override
+  public SomeCaseBlock<T> then(@Nonnull Consumer<T> consumer) {
     return new SomeCaseBlock<T>() {
 
       @Override
@@ -38,7 +46,8 @@ public class SomeCase<T> implements CaseMatcher<Optional<T>> {
 
   public static abstract class SomeCaseFunction<T1, R> implements CaseFunction<Optional<T1>, R> {}
 
-  public <R> SomeCaseFunction<T, R> function(@Nonnull Function<T, R> function) {
+  @Override
+  public <R> SomeCaseFunction<T, R> thenReturn(@Nonnull Function<T, R> function) {
     return new SomeCaseFunction<T, R>() {
 
       @Override

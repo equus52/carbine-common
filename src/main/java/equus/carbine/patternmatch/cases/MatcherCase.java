@@ -7,11 +7,10 @@ import lombok.Value;
 
 import org.hamcrest.Matcher;
 
-import equus.carbine.patternmatch.CaseMatcher;
-import equus.carbine.patternmatch.GeneralCaseBlockFunctionable;
+import equus.carbine.patternmatch.NoConvertCase;
 
 @Value
-public class MatcherCase<S> implements CaseMatcher<S>, GeneralCaseBlockFunctionable<S> {
+public class MatcherCase<S> implements NoConvertCase<S> {
   @Nonnull
   Matcher<S> matcher;
 
