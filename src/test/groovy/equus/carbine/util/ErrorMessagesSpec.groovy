@@ -4,7 +4,6 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 
-@SuppressWarnings("null")
 class ErrorMessagesSpec extends Specification{
 
   @Unroll

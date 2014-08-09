@@ -1,12 +1,11 @@
 package equus.carbine.util
 
-import static org.hamcrest.CoreMatchers.is
-import static org.junit.Assert.assertThat
+import static org.hamcrest.CoreMatchers.*
+import static org.junit.Assert.*
 import spock.lang.Specification
 import spock.lang.Unroll
 
 
-@SuppressWarnings("null")
 class DateSupportSpec  extends Specification{
 
   @Unroll
